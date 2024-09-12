@@ -7,6 +7,8 @@ type IntialStateType = {
     currCell: { r: number, c: number },
     steps: { cell: { r: number, c: number }, grid: number[][] }[],
     currAnimationIndx: number,
+    animationSpeed: number,
+    pause: boolean,
 }
 
 interface StateProviderProps {
@@ -20,6 +22,8 @@ const initalState: IntialStateType = {
     currCell: { r: 0, c: 0 },
     steps: [],
     currAnimationIndx: 0,
+    animationSpeed: 250,
+    pause: true,
 }
 
 const GlobalStateContext = createContext(initalState)
