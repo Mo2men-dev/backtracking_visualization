@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { border, solve } from './utils'
 
-const initalGrid = [
+export const initalGrid = [
     [0,7,0,0,0,4,0,0,0],
     [0,3,0,0,0,0,2,0,1],
     [1,0,6,0,0,0,0,4,0],
@@ -50,7 +50,7 @@ function App() {
                                 {
                                     row.map((cell, j) => {
                                         return (
-                                            <div key={j} className={`px-4 py-2 select-none font-bold text-xl ${border(i, j)} ${(currCell.r === i && currCell.c === j) && animate ? 'bg-blue-400 bg-opacity-25' : ''}`}>
+                                            <div key={j} className={`px-4 py-2 select-none font-bold text-xl ${border(i, j)} ${(currCell.r === i && currCell.c === j + 1) && animate ? 'bg-blue-400 bg-opacity-25' : ''}`}>
                                                 {cell === 0 ? <>&nbsp;</> : <span className={`${initalGrid[i][j] !== 0 ? 'text-green-400' : 'text-yellow-400' }`}>{cell}</span>}
                                             </div>
                                         )
