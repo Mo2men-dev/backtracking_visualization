@@ -52,25 +52,36 @@ function App() {
 
     return (
         <div className='h-full flex items-center justify-center flex-col'>
-            <div>
-                <Grid grid={grid}/>
+            <nav>TODO: NAVBAR</nav>
+            <div className='w-full h-full flex'>
+                <div className='flex flex-col flex-1'>
+                    <div>
+                        <h1 className='text-2xl font-bold w-full flex p-4 animate-fade-in-right'>Sudoko Solver</h1>
+                    </div>
+                </div>
+                <div className='flex flex-col flex-1 w-fit justify-center items-center'>
+                    <div>
+                        <Grid grid={grid}/>
+                    </div>
+                    <button onClick={() => {
+                        // Start the animation
+                        globalState.animate = true
+
+                        // Clear the steps array
+                        globalState.steps = []
+
+                        // Reset the grid
+                        setGrid(globalState.initalGrid)
+
+                        // Solve the grid and store the steps (Trigger the useEffect)
+                        solve(globalState.initalGridCopy, 0, 0, globalState.steps)
+
+                        // Reset the current animation index
+                        globalState.currAnimationIndx = 0
+                    }} className='mt-4 px-4 py-2 bg-blue-500 text-white font-bold rounded-md'>Solve</button>
+                </div>
+                <div className='flex-1'>TODO: CONTROLS</div>
             </div>
-            <button onClick={() => {
-                // Start the animation
-                globalState.animate = true
-
-                // Clear the steps array
-                globalState.steps = []
-
-                // Reset the grid
-                setGrid(globalState.initalGrid)
-
-                // Solve the grid and store the steps (Trigger the useEffect)
-                solve(globalState.initalGridCopy, 0, 0, globalState.steps)
-
-                // Reset the current animation index
-                globalState.currAnimationIndx = 0
-            }} className='mt-4 px-4 py-2 bg-blue-500 text-white font-bold rounded-md'>Solve</button>
         </div>
     )
 }
