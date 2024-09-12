@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { solve } from './utils'
 import { useGlobalState } from './context/state'
-import Cell from './components/Cell'
+import Grid from './components/Grid'
 
 function App() {
     // Get the global state
@@ -52,20 +52,8 @@ function App() {
 
     return (
         <div className='h-full flex items-center justify-center flex-col'>
-            <div className='w-fit h-fit'>
-                {
-                    grid.map((row, i) => {
-                        return (
-                            <div key={i} className='flex'>
-                                {
-                                    row.map((cell, j) => {
-                                        return <Cell key={j} cellVal={cell} i={i} j={j} />
-                                    })
-                                }
-                            </div>
-                        )
-                    })
-            }
+            <div>
+                <Grid grid={grid}/>
             </div>
             <button onClick={() => {
                 // Start the animation
