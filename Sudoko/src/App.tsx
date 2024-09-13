@@ -4,6 +4,8 @@ import { useGlobalState } from './context/state'
 import Grid from './components/Grid'
 import Title from './components/Title'
 import Button from './components/Button'
+import VerticalSection from './layout/VerticalSection'
+import HorizontalSection from './layout/HorizontalSection'
 
 function App() {
     // Get the global state
@@ -91,6 +93,14 @@ function App() {
         setGrid(globalState.steps[globalState.currAnimationIndx].grid)
     }
 
+    function handleSpeedChange(e: React.ChangeEvent<HTMLInputElement>) {
+        setSpeed(parseInt(e.target.value))
+        globalState.animationSpeed = parseInt(e.target.value)
+        
+        if (globalState.pause) return
+        onSolve(globalState.currAnimationIndx)
+    }
+
     function nextStep() {
         if (globalState.currAnimationIndx === 0) return
         if (!globalState.pause) return
@@ -114,42 +124,32 @@ function App() {
                 <span>&nbsp;</span>
                 <a href="#queens">N-Queens</a>
             </nav>
-            <div className='w-full h-full flex'>
-                <div className='flex flex-1 justify-end items-center'>
-                    <Title />
-                </div>
-                <div className='flex flex-col flex-1 w-fit justify-evenly items-center animate-fade-in opacity-0'>
-                    <Grid grid={grid}/>
+            <VerticalSection styles='w-full h-full' childrenFlex='1' >
+                <Title />
+                <HorizontalSection styles='w-fit justify-evenly items-center animate-fade-in opacity-0'>
+                    <Grid grid={grid} />
                     <Button text='Solve' props={{onClick: () => onSolve()}} />
-                </div>
-                <div className='flex flex-col flex-1'>
-                    <div className='p-4'>
-                        <h1 className='text-2xl font-bold w-full flex animate-fade-in-right-delay opacity-0'>Controls</h1>
-                        <div className='opacity-0 animate-fade-in-top'>
-                            <div className='flex'>
-                                <label className='mr-1'>Speed: {globalState.animationSpeed}ms</label>
-                                <input type="range" 
-                                min="50"
-                                max="500"
-                                step="50"
-                                value={speed} 
-                                onChange={(e) => {
-                                    setSpeed(parseInt(e.target.value))
-                                    globalState.animationSpeed = parseInt(e.target.value)
-                                    
-                                    if (globalState.pause) return
-                                    onSolve(globalState.currAnimationIndx)
-                                }} />
-                            </div>
-                            <div className='mt-4 flex justify-evenly text-sm items-center text-white font-bold'>
-                                <Button text='Reset' props={{ onClick: reset }} />
-                                <Button text={globalState.pause ? 'Resume' : 'Pause'} props={{ onClick: pause }} />
-                                <Button text='Next Step' props={{ onClick: () => nextStep() }} />
-                            </div>
-                        </div>
+                </HorizontalSection>
+                <HorizontalSection>
+                    <h1 className='text-2xl font-bold w-full flex animate-fade-in-right-delay opacity-0'>Controls</h1>
+                    <div className='opacity-0 animate-fade-in-top'>
+                        <VerticalSection>
+                            <label className='mr-1 flex-initial'>Speed: {globalState.animationSpeed}ms</label>
+                            <input type="range" 
+                            min="50"
+                            max="500"
+                            step="50"
+                            value={speed} 
+                            onChange={(e) => handleSpeedChange(e)} />
+                        </VerticalSection>
+                        <VerticalSection styles='flex-initial justify-evenly items-center mt-4'>
+                            <Button text='Reset' props={{ onClick: reset }} />
+                            <Button text={globalState.pause ? 'Resume' : 'Pause'} props={{ onClick: pause }} />
+                            <Button text='Next Step' props={{ onClick: () => nextStep() }} />
+                        </VerticalSection>
                     </div>
-                </div>
-            </div>
+                </HorizontalSection>
+            </VerticalSection>
             <footer>TODO: FOOTER</footer>
         </div>
     )

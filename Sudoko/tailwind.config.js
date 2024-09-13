@@ -38,7 +38,7 @@ export default {
         },
 
         animation: {
-            "fade-in": "fade-in 1s ease-in 2s forwards",
+            "fade-in": "fade-in 1s ease-out 2s forwards",
             "fade-in-right": "fade-in-right .5s ease-out forwards",
             "fade-in-right-delay": "fade-in-right .5s ease-out .5s forwards",
             "fade-in-top": "fade-in-top 1s ease-out 1s forwards",

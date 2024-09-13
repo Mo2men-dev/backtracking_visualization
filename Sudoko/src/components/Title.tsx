@@ -36,10 +36,12 @@ function Title() {
       }, []);
     
     return (
-        <div key={title} className='animate-fade-in-right'>
-            <h1 className='text-5xl italic font-bold h-fit origin-center -rotate-90 text-nowrap'>
-                {title}
-            </h1>
+        <div className='justify-end items-center'>
+            <div key={title} className='animate-fade-in-right'>
+                <h1 className='text-5xl italic font-bold h-fit origin-center -rotate-90 text-nowrap'>
+                    {title}
+                </h1>
+            </div>
         </div>
   )
 }
