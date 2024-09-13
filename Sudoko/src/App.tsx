@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
-import { solve } from './utils'
 import { useGlobalState } from './context/state'
 import Grid from './components/Grid'
 import Title from './components/Title'
 import Button from './components/Button'
 import VerticalSection from './layout/VerticalSection'
 import HorizontalSection from './layout/HorizontalSection'
+import { nextStep, pause, play, reset } from './utils/controls'
 
 function App() {
     // Get the global state
@@ -59,62 +59,11 @@ function App() {
         return () => clearInterval(interval)
     }, [globalState.steps, globalState.animationSpeed])
 
-    function onSolve(startingIndex: number = 0) {
-        // Start the animation
-        globalState.animate = true
-
-        // Reset the pause state
-        globalState.pause = false
-
-        // Clear the steps array
-        globalState.steps = []
-        
-        // Only reset the grid if we are not in the middle of an animation
-        // prevents grid reset when changing speed and pausing
-        if (startingIndex === 0) {
-            // Reset the grid
-            setGrid(globalState.initalGrid)
-        }
-
-        // Solve the grid and store the steps (Trigger the useEffect)
-        solve(globalState.initalGridCopy, 0, 0, globalState.steps)
-
-        // Reset the current animation index
-        globalState.currAnimationIndx = startingIndex
-    }
-
-    function pause() {
-        if (globalState.currAnimationIndx === globalState.steps.length || globalState.currAnimationIndx === 0) return
-
-        // Toggle the pause state
-        globalState.pause = !globalState.pause
-
-        // Update the grid (to rerender the tree)
-        setGrid(globalState.steps[globalState.currAnimationIndx].grid)
-    }
-
     function handleSpeedChange(e: React.ChangeEvent<HTMLInputElement>) {
         setSpeed(parseInt(e.target.value))
         globalState.animationSpeed = parseInt(e.target.value)
-        
         if (globalState.pause) return
-        onSolve(globalState.currAnimationIndx)
-    }
-
-    function nextStep() {
-        if (globalState.currAnimationIndx === 0) return
-        if (!globalState.pause) return
-        globalState.currAnimationIndx++
-        globalState.currCell = globalState.steps[globalState.currAnimationIndx].cell
-        setGrid(globalState.steps[globalState.currAnimationIndx].grid)
-    }
-
-    function reset() {
-        pause()
-        if (globalState.animate) globalState.animate = false
-        setGrid(globalState.initalGrid)
-        globalState.currAnimationIndx = 0
-        globalState.currCell = { r: 0, c: 0 }
+        play(globalState.currAnimationIndx, setGrid, globalState)
     }
 
     return (
@@ -128,14 +77,14 @@ function App() {
                 <Title />
                 <HorizontalSection styles='w-fit justify-evenly items-center animate-fade-in opacity-0'>
                     <Grid grid={grid} />
-                    <Button text='Solve' props={{onClick: () => onSolve()}} />
+                    <Button text='Solve' props={{ onClick: () => play(0, setGrid, globalState) }} />
                 </HorizontalSection>
                 <HorizontalSection>
                     <h1 className='text-2xl font-bold w-full flex animate-fade-in-right-delay opacity-0'>Controls</h1>
                     <div className='opacity-0 animate-fade-in-top'>
                         <VerticalSection>
-                            <label className='mr-1 flex-initial'>Speed: {globalState.animationSpeed}ms</label>
-                            <input type="range" 
+                            <label className='mr-1 flex-initial'>Speed: { globalState.animationSpeed }ms</label>
+                            <input type="range"
                             min="50"
                             max="500"
                             step="50"
@@ -143,9 +92,9 @@ function App() {
                             onChange={(e) => handleSpeedChange(e)} />
                         </VerticalSection>
                         <VerticalSection styles='flex-initial justify-evenly items-center mt-4'>
-                            <Button text='Reset' props={{ onClick: reset }} />
-                            <Button text={globalState.pause ? 'Resume' : 'Pause'} props={{ onClick: pause }} />
-                            <Button text='Next Step' props={{ onClick: () => nextStep() }} />
+                            <Button text='Reset' props={{ onClick: () => reset(setGrid, globalState) }} />
+                            <Button text={ globalState.pause ? 'Resume' : 'Pause' } props={{ onClick: () => pause(setGrid, globalState) }} />
+                            <Button text='Next Step' props={{ onClick: () => nextStep(setGrid, globalState) }} />
                         </VerticalSection>
                     </div>
                 </HorizontalSection>

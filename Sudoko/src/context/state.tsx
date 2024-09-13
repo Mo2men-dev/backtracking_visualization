@@ -1,6 +1,6 @@
 import React, {createContext, ReactNode, useContext} from "react";
 
-type IntialStateType = {
+export type IntialStateType = {
     initalGrid: number[][],
     initalGridCopy: number[][],
     animate: boolean,

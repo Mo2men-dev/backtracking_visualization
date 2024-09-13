@@ -1,5 +1,5 @@
 import { useGlobalState } from '../context/state'
-import { border } from '../utils'
+import { border } from '../utils/utils'
 
 function Cell({ cellVal, i, j }: { cellVal: number, i: number, j: number, }) {
     const { currCell, animate, initalGrid } = useGlobalState()
