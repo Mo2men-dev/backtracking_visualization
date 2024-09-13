@@ -29,14 +29,14 @@ function Title() {
         }
 
         // Listen to hash changes
-        window.addEventListener('hashchange', () => handleHashChange);
-    
+        window.addEventListener('hashchange', () => handleHashChange());
+
         // Cleanup listener on component unmount
-        return () => window.removeEventListener('hashchange', () => handleHashChange);
+        return () => window.removeEventListener('hashchange', () => handleHashChange());
       }, []);
     
     return (
-        <div className='justify-end items-center'>
+        <div className='justify-end items-center flex flex-1'>
             <div key={title} className='animate-fade-in-right'>
                 <h1 className='text-5xl italic font-bold h-fit origin-center -rotate-90 text-nowrap'>
                     {title}

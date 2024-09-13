@@ -67,19 +67,19 @@ function App() {
     }
 
     return (
-        <div className='h-full flex items-center justify-center flex-col'>
+        <HorizontalSection styles='h-full'>
             <nav className='w-full p-2'>
                 <a href="#sudoko">Sudoko</a>
                 <span>&nbsp;</span>
                 <a href="#queens">N-Queens</a>
             </nav>
-            <VerticalSection styles='w-full h-full' childrenFlex='1' >
+            <VerticalSection styles='w-full h-full' >
                 <Title />
-                <HorizontalSection styles='w-fit justify-evenly items-center animate-fade-in opacity-0'>
+                <HorizontalSection styles='flex flex-1 w-fit justify-evenly items-center animate-fade-in opacity-0'>
                     <Grid grid={grid} />
                     <Button text='Solve' props={{ onClick: () => play(0, setGrid, globalState) }} />
                 </HorizontalSection>
-                <HorizontalSection>
+                <HorizontalSection styles='flex flex-1'>
                     <h1 className='text-2xl font-bold w-full flex animate-fade-in-right-delay opacity-0'>Controls</h1>
                     <div className='opacity-0 animate-fade-in-top'>
                         <VerticalSection>
@@ -100,7 +100,7 @@ function App() {
                 </HorizontalSection>
             </VerticalSection>
             <footer>TODO: FOOTER</footer>
-        </div>
+        </HorizontalSection>
     )
 }
 

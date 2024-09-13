@@ -1,10 +1,10 @@
 import React from 'react'
 
-function VerticalSection({ children, styles, childrenFlex = 'none' }: { children: React.ReactNode, styles?: string, childrenFlex?: string }) {
-  return (
-    <div className={`${ styles } flex [&>*]:flex [&>*]:flex-${childrenFlex}`}>
-        {children}
-    </div>
+function VerticalSection({ children, styles = '' }: { children: React.ReactNode, styles?: string}) {
+    return (
+        <div className={`${ styles } flex`}>
+            {children}
+        </div>
   )
 }
 
