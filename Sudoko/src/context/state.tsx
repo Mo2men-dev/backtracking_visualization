@@ -9,6 +9,7 @@ type IntialStateType = {
     currAnimationIndx: number,
     animationSpeed: number,
     pause: boolean,
+    problem: string,
 }
 
 interface StateProviderProps {
@@ -24,6 +25,7 @@ const initalState: IntialStateType = {
     currAnimationIndx: 0,
     animationSpeed: 250,
     pause: true,
+    problem: "Sudoko",
 }
 
 const GlobalStateContext = createContext(initalState)

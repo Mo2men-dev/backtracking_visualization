@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { solve } from './utils'
 import { useGlobalState } from './context/state'
 import Grid from './components/Grid'
+import Title from './components/Title'
+import Button from './components/Button'
 
 function App() {
     // Get the global state
@@ -26,7 +28,8 @@ function App() {
     // The current grid being displayed
     const [grid, setGrid] = useState<number[][]>(globalState.initalGrid)
 
-    const [speed, setSpeed] = useState(500)
+    // The speed of the animation
+    const [speed, setSpeed] = useState(250)
 
     useEffect(() => {
         // Show answer without animation
@@ -79,9 +82,8 @@ function App() {
     }
 
     function pause() {
-        if (globalState.currAnimationIndx === globalState.steps.length) {
-            return
-        }
+        if (globalState.currAnimationIndx === globalState.steps.length || globalState.currAnimationIndx === 0) return
+
         // Toggle the pause state
         globalState.pause = !globalState.pause
 
@@ -89,19 +91,36 @@ function App() {
         setGrid(globalState.steps[globalState.currAnimationIndx].grid)
     }
 
+    function nextStep() {
+        if (globalState.currAnimationIndx === 0) return
+        if (!globalState.pause) return
+        globalState.currAnimationIndx++
+        globalState.currCell = globalState.steps[globalState.currAnimationIndx].cell
+        setGrid(globalState.steps[globalState.currAnimationIndx].grid)
+    }
+
+    function reset() {
+        pause()
+        if (globalState.animate) globalState.animate = false
+        setGrid(globalState.initalGrid)
+        globalState.currAnimationIndx = 0
+        globalState.currCell = { r: 0, c: 0 }
+    }
+
     return (
         <div className='h-full flex items-center justify-center flex-col'>
+            <nav className='w-full p-2'>
+                <a href="#sudoko">Sudoko</a>
+                <span>&nbsp;</span>
+                <a href="#queens">N-Queens</a>
+            </nav>
             <div className='w-full h-full flex'>
                 <div className='flex flex-1 justify-end items-center'>
-                    <div className='animate-fade-in-right'>
-                        <h1 className='text-5xl italic font-bold h-fit origin-center -rotate-90 text-nowrap'>Sudoko Solver</h1>
-                    </div>
+                    <Title />
                 </div>
-                <div className='flex flex-col flex-1 w-fit justify-center items-center animate-fade-in opacity-0'>
-                    <div>
-                        <Grid grid={grid}/>
-                    </div>
-                    <button onClick={() => onSolve()} className='mt-4 px-4 py-2 bg-blue-500 text-white font-bold rounded-md'>Solve</button>
+                <div className='flex flex-col flex-1 w-fit justify-evenly items-center animate-fade-in opacity-0'>
+                    <Grid grid={grid}/>
+                    <Button text='Solve' props={{onClick: () => onSolve()}} />
                 </div>
                 <div className='flex flex-col flex-1'>
                     <div className='p-4'>
@@ -123,22 +142,9 @@ function App() {
                                 }} />
                             </div>
                             <div className='mt-4 flex justify-evenly text-sm items-center text-white font-bold'>
-                                <button
-                                    onClick={() => {
-                                        if (globalState.currAnimationIndx === 0) return
-                                        if (!globalState.pause) return
-                                        globalState.currAnimationIndx++
-                                        globalState.currCell = globalState.steps[globalState.currAnimationIndx].cell
-                                        setGrid(globalState.steps[globalState.currAnimationIndx].grid)
-                                    }} 
-                                    className={`h-fit p-2 bg-blue-500 rounded-md`}>
-                                        Next Step
-                                </button>
-                                <button 
-                                    onClick={pause}
-                                    className='h-fit p-2 bg-blue-500 rounded-md'>
-                                        {globalState.pause ? 'Resume' : 'Pause'}
-                                </button>
+                                <Button text='Reset' props={{ onClick: reset }} />
+                                <Button text={globalState.pause ? 'Resume' : 'Pause'} props={{ onClick: pause }} />
+                                <Button text='Next Step' props={{ onClick: () => nextStep() }} />
                             </div>
                         </div>
                     </div>
