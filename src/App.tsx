@@ -39,6 +39,7 @@ function App() {
 
     // The current grid being displayed
     const [grid, setGrid] = useState<number[][]>(globalState.initalGrid)
+    const [animationDone, setAnimationDone] = useState(false)
 
     function handleHashChange() {
         globalState.initalGrid = globalState.problem === 'Sudoko' ? [
@@ -86,6 +87,9 @@ function App() {
         const interval = setInterval(() => {
             if (!globalState.pause) {
                 if (globalState.currAnimationIndx < globalState.steps.length) {
+                    // Update the animation done state
+                    setAnimationDone(false)
+
                     // The current cell being processed by the algorithm
                     globalState.currCell = globalState.steps[globalState.currAnimationIndx].cell
 
@@ -97,6 +101,9 @@ function App() {
                 } else {
                     // Animation is done
                     globalState.animate = false
+
+                    // Update the animation done state
+                    setAnimationDone(true)
 
                     // Update the grid to the final frame
                     setGrid(globalState.steps[globalState.steps.length - 1].grid)
@@ -115,7 +122,7 @@ function App() {
             <Navbar />
             <VerticalSection styles='w-full h-full'>
                 <Title title={title} />
-                <Display grid={grid} setGrid={setGrid} />
+                <Display grid={grid} setGrid={setGrid} animationDone={animationDone} />
                 <Controls setGrid={setGrid} />
             </VerticalSection>
             <Footer />
