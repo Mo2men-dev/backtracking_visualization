@@ -1,6 +1,6 @@
 import { useGlobalState } from '../context/state'
 import Cell from './Cell'
-import Tail from './Tail'
+import Tile from './Tile'
 
 function Grid({ grid }: { grid: number[][] }) {
     const globalState = useGlobalState()
@@ -13,7 +13,7 @@ function Grid({ grid }: { grid: number[][] }) {
                         <div key={i} className='flex'>
                             {
                                 row.map((cell, j) => {
-                                        return globalState.problem === 'Sudoko' ? <Cell key={j} cellVal={cell} i={i} j={j} /> : <Tail key={j} cellVal={cell} i={i} j={j} />
+                                        return globalState.problem === 'Sudoko' ? <Cell key={j} cellVal={cell} i={i} j={j} /> : <Tile key={j} cellVal={cell} i={i} j={j} />
                                     })
                                 }
                             </div>

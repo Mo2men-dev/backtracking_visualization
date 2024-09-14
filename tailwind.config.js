@@ -43,6 +43,11 @@ export default {
             "fade-in-right-delay": "fade-in-right .5s ease-out .5s forwards",
             "fade-in-top": "fade-in-top 1s ease-out 1s forwards",
         },
+
+        fontFamily: {
+            'ubuntu': ['Ubuntu Mono', 'monospace'],
+            'ptserif': ['PT Serif', 'serif'],
+        },
       },
     },
     plugins: [],
