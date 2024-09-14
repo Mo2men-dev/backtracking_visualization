@@ -27,7 +27,7 @@ const initalState: IntialStateType = {
     currAnimationIndx: 0,
     animationSpeed: 250,
     pause: true,
-    problem: "Sudoko",
+    problem: "sudoko",
 }
 
 const GlobalStateContext = createContext(initalState)

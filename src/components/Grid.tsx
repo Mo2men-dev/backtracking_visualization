@@ -3,7 +3,7 @@ import Cell from './Cell'
 import Tile from './Tile'
 
 function Grid({ grid }: { grid: number[][] }) {
-    const globalState = useGlobalState()
+    const { problem } = useGlobalState()
     
     return (
         <div className='w-fit h-fit'>
@@ -13,7 +13,7 @@ function Grid({ grid }: { grid: number[][] }) {
                         <div key={i} className='flex'>
                             {
                                 row.map((cell, j) => {
-                                        return globalState.problem === 'Sudoko' ? <Cell key={j} cellVal={cell} i={i} j={j} /> : <Tile key={j} cellVal={cell} i={i} j={j} />
+                                        return problem === "" || problem === 'sudoko' ? <Cell key={j} cellVal={cell} i={i} j={j} /> : <Tile key={j} cellVal={cell} i={i} j={j} />
                                     })
                                 }
                             </div>

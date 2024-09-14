@@ -21,10 +21,10 @@ export function play(startingIndex: number = 0, setGrid: React.Dispatch<React.Se
 
     // Solve the grid and store the steps (Trigger the useEffect)
     switch (globalState.problem) {
-        case 'Sudoko':
+        case 'sudoko':
             solveSudoko(globalState.initalGridCopy, 0, 0, globalState.steps, globalState.gridSize)
             break
-        case 'N-Queens':
+        case 'n-queens':
             solveQueens(globalState.initalGridCopy, 0, 0, globalState.steps, globalState.gridSize)
             break
         default:

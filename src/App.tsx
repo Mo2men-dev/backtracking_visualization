@@ -7,17 +7,27 @@ import Controls from './components/Controls'
 import Display from './components/Display'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
-import { getTitle } from './utils/utils'
 import { reset } from './utils/controls'
+import { useLocation } from 'react-router-dom'
 
 function App() {
     // Get the global state
     const globalState = useGlobalState()
+    const path = useLocation().pathname.split('/')[1]
 
-    const [title, setTitle] = useState(globalState.problem)
+    switch (path) {
+        case 'sudoko':
+            globalState.problem = 'sudoko'
+            break
+        case 'n-queens':
+            globalState.problem = 'n-queens'
+            break
+        default:
+            globalState.problem = 'sudoko'
+    }
 
     // TODO: Function to generate a random grids
-    globalState.initalGrid = globalState.problem === 'Sudoko' ? [
+    globalState.initalGrid = globalState.problem === 'sudoko' ? [
         [0,9,0,1,2,0,4,6,5],
         [0,0,0,8,5,6,9,0,3],
         [0,1,0,0,9,4,0,0,8],
@@ -41,8 +51,8 @@ function App() {
     const [grid, setGrid] = useState<number[][]>(globalState.initalGrid)
     const [animationDone, setAnimationDone] = useState(false)
 
-    function handleHashChange() {
-        globalState.initalGrid = globalState.problem === 'Sudoko' ? [
+    useEffect(() => {
+        globalState.initalGrid = globalState.problem === 'sudoko' ? [
             [0,9,0,1,2,0,4,6,5],
             [0,0,0,8,5,6,9,0,3],
             [0,1,0,0,9,4,0,0,8],
@@ -58,70 +68,58 @@ function App() {
             [0,0,0,0],
             [0,0,0,0]
         ]
-
-        const title = getTitle()
-        globalState.problem = title
-        setTitle(title)
-
-        globalState.gridSize = title === 'Sudoko' ? Math.sqrt(globalState.initalGrid[0].length) : globalState.initalGrid.length
+        globalState.initalGridCopy = globalState.initalGrid.map(row => row.slice())
+        globalState.gridSize = globalState.problem === 'sudoko' ? Math.sqrt(globalState.initalGrid[0].length) : globalState.initalGrid.length
         setGrid(globalState.initalGrid)
         reset(setGrid, globalState)
-    }
 
-    useEffect(() => {
-        // Listen to hash changes
-        window.addEventListener('hashchange', () => handleHashChange());
-
-        // Cleanup listener on component unmount
-        return () => window.removeEventListener('hashchange', () => handleHashChange());
-    }, []);
-
-    useEffect(() => {
         // Show answer without animation
         if (!globalState.animate) {
             setGrid(globalState.initalGridCopy)
             return
         }
+    }, [globalState.steps])
 
+    useEffect(() => {
         // Play animation
         const interval = setInterval(() => {
-            if (!globalState.pause) {
-                if (globalState.currAnimationIndx < globalState.steps.length) {
-                    // Update the animation done state
-                    setAnimationDone(false)
-
-                    // The current cell being processed by the algorithm
-                    globalState.currCell = globalState.steps[globalState.currAnimationIndx].cell
-
-                    // Update the grid
-                    setGrid(globalState.steps[globalState.currAnimationIndx].grid)
-
-                    // Move to the next "Animation Frame"
-                    globalState.currAnimationIndx++
-                } else {
-                    // Animation is done
-                    globalState.animate = false
-
-                    // Update the animation done state
-                    setAnimationDone(true)
-
-                    // Update the grid to the final frame
-                    setGrid(globalState.steps[globalState.steps.length - 1].grid)
-
-                    clearInterval(interval)
-                }
-                
+        if (!globalState.pause) {
+            if (globalState.currAnimationIndx < globalState.steps.length) {
+                // Update the animation done state
+                setAnimationDone(false)
+        
+                // The current cell being processed by the algorithm
+                globalState.currCell = globalState.steps[globalState.currAnimationIndx].cell
+        
+                // Update the grid
+                setGrid(globalState.steps[globalState.currAnimationIndx].grid)
+        
+                // Move to the next "Animation Frame"
+                globalState.currAnimationIndx++
+            } else {
+                // Animation is done
+                globalState.animate = false
+        
+                // Update the animation done state
+                setAnimationDone(true)
+        
+                // Update the grid to the final frame
+                setGrid(globalState.steps[globalState.steps.length - 1].grid)
+        
+                clearInterval(interval)
             }
-        }, globalState.animationSpeed)
-
+                        
+        }
+    }, globalState.animationSpeed)
+    
         return () => clearInterval(interval)
-    }, [globalState.steps, globalState.animationSpeed])
+    }, [globalState.animationSpeed])
 
     return (
         <HorizontalSection styles='h-full'>
             <Navbar />
             <VerticalSection styles='w-full h-full'>
-                <Title title={title} />
+                <Title title={globalState.problem} />
                 <Display grid={grid} setGrid={setGrid} animationDone={animationDone} />
                 <Controls setGrid={setGrid} />
             </VerticalSection>

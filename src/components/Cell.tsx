@@ -2,8 +2,7 @@ import { useGlobalState } from '../context/state'
 import { border } from '../utils/styling'
 
 function Cell({ cellVal, i, j }: { cellVal: number, i: number, j: number, }) {
-    const { currCell, animate, initalGrid } = useGlobalState()
-    const gridSize = Math.sqrt(initalGrid.length)
+    const { currCell, animate, initalGrid, gridSize } = useGlobalState()
 
     return (
         <div key={j} className={`px-4 py-2 transition-all select-none font-bold text-xl ${border(i, j, gridSize)} ${ (currCell.r === i && currCell.c === j + 1) && animate ? 'bg-blue-400 bg-opacity-25' : '' }`}>

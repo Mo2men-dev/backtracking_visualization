@@ -16,27 +16,27 @@ function Controls({ setGrid }: { setGrid: React.Dispatch<React.SetStateAction<nu
         globalState.animationSpeed = parseInt(e.target.value)
         if (globalState.pause) return
     }
-  return (
-    <HorizontalSection styles='flex flex-1'>
-        <h1 className='text-2xl font-bold w-full flex animate-fade-in-right-delay opacity-0'>Controls</h1>
-        <div className='opacity-0 animate-fade-in-top'>
-            <VerticalSection>
-                <label className='mr-1 flex-initial'>Speed: { globalState.animationSpeed }ms</label>
-                <input type="range"
-                min="50"
-                max="500"
-                step="50"
-                value={speed} 
-                onChange={(e) => handleSpeedChange(e)} />
-            </VerticalSection>
-            <VerticalSection styles='flex-initial justify-evenly items-center mt-4'>
-                <Button text='Reset' props={{ onClick: () => reset(setGrid, globalState) }} />
-                <Button text={ globalState.pause ? 'Resume' : 'Pause' } props={{ onClick: () => pause(setGrid, globalState) }} />
-                <Button text='Next Step' props={{ onClick: () => nextStep(setGrid, globalState) }} />
-            </VerticalSection>
-        </div>
-    </HorizontalSection>
-  )
+    return (
+        <HorizontalSection styles='flex flex-1'>
+            <h1 className='text-2xl font-bold w-full flex animate-fade-in-right-delay opacity-0'>Controls</h1>
+            <div className='opacity-0 animate-fade-in-top'>
+                <VerticalSection>
+                    <label className='mr-1 flex-initial'>Speed: { globalState.animationSpeed }ms</label>
+                    <input type="range"
+                    min="50"
+                    max="500"
+                    step="50"
+                    value={speed} 
+                    onChange={(e) => handleSpeedChange(e)} />
+                </VerticalSection>
+                <VerticalSection styles='flex-initial justify-evenly items-center mt-4'>
+                    <Button text='Reset' props={{ onClick: () => reset(setGrid, globalState) }} />
+                    <Button text={ globalState.pause ? 'Resume' : 'Pause' } props={{ onClick: () => pause(setGrid, globalState) }} />
+                    <Button text='Next Step' props={{ onClick: () => nextStep(setGrid, globalState) }} />
+                </VerticalSection>
+            </div>
+        </HorizontalSection>
+    )
 }
 
 export default Controls
