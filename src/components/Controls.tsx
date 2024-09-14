@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import HorizontalSection from '../layout/HorizontalSection'
 import VerticalSection from '../layout/VerticalSection'
-import { reset, pause, nextStep, play } from '../utils/controls'
+import { reset, pause, nextStep } from '../utils/controls'
 import Button from './Button'
 import { useGlobalState } from '../context/state'
 
@@ -15,7 +15,6 @@ function Controls({ setGrid }: { setGrid: React.Dispatch<React.SetStateAction<nu
         setSpeed(parseInt(e.target.value))
         globalState.animationSpeed = parseInt(e.target.value)
         if (globalState.pause) return
-        play(globalState.currAnimationIndx, setGrid, globalState)
     }
   return (
     <HorizontalSection styles='flex flex-1'>
