@@ -1,28 +1,12 @@
 import { useGlobalState } from "../context/state"
+import { checkeredBackground, roundedCorners } from "../utils/styling"
 
 function Tail({ cellVal, i, j }: { cellVal:number, i: number, j: number }) {
-    const globalState = useGlobalState()
-
-    function roundedCorners(i: number, j: number) {
-        const gridSize = globalState.initalGrid ? globalState.initalGrid.length : 0
-
-        if (i === 0 && j === 0) return 'rounded-tl-lg'
-        if (i === 0 && j === gridSize - 1) return 'rounded-tr-lg'
-        if (i === gridSize - 1 && j === 0) return 'rounded-bl-lg'
-        if (i === gridSize - 1 && j === gridSize - 1) return 'rounded-br-lg'
-    }
-
-    function checkeredBackground(i: number, j: number) {
-        if ((i % 2 === 0) && (j % 2 !== 0) || (i % 2 !== 0) && (j % 2 === 0)) {
-            return 'bg-orange-200'
-        } else {
-            return 'bg-black'
-        }
-    }
+    const gridSize = useGlobalState().initalGrid.length
 
     return (
         <div>
-            <div key={j} className={`transition-all px-10 py-8 select-none ${checkeredBackground(i, j)} ${roundedCorners(i, j)}`}>
+            <div key={j} className={`transition-all px-10 py-8 select-none ${checkeredBackground(i, j)} ${roundedCorners(i, j, gridSize)}`}>
                 {
                     cellVal === 0 ? <>&nbsp;</> : <span className='text-white'>Q</span>
                 }

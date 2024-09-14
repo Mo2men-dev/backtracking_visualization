@@ -1,41 +1,4 @@
-export const gridSize = 3
-
-export function border(i: number, j: number) {
-    let border = 'border-r-2 border-b-2 border-white'
-
-    if (i === gridSize ** 2 - 1) {
-        border = 'border-r-2 border-white'
-    }
-
-    if (j === gridSize ** 2 - 1) {
-        border = 'border-b-2 border-white'
-    }
-
-    if (i === gridSize ** 2 - 1 && j === gridSize ** 2 - 1) {
-        border = ''
-    }
-
-    if (j === gridSize - 1 || j === 2 * gridSize - 1) {
-        border = `border-r-4 border-r-blue-500 ${i === gridSize ** 2 - 1 ? "" : "border-b-2"} border-white`
-    }
-
-    if (i === gridSize - 1 || i === 2 * gridSize - 1) {
-        border = `border-b-4 border-b-blue-500 ${j === gridSize ** 2 - 1 ? "" : "border-r-2"} border-white`
-    }
-
-    if (
-        (i === gridSize - 1 && j === gridSize - 1) ||
-        (i === 2 * gridSize - 1 && j === 2 * gridSize - 1) ||
-        (i === gridSize - 1 && j === 2 * gridSize - 1) ||
-        (i === 2 * gridSize - 1 && j === gridSize - 1)
-    ) {
-        border = `border-r-4 border-b-4 border-b-blue-500 border-r-blue-500`
-    }
-
-    return border
-}
-
-function isValid(grid: number[][], r: number, c: number, num: number) {
+function isValid(grid: number[][], r: number, c: number, num: number, gridSize: number = 3) {
     const row = grid[r]
     const col = grid.map(row => row[c])
 
@@ -53,7 +16,7 @@ function isValid(grid: number[][], r: number, c: number, num: number) {
     return !isInRow && !isInCol && !isInSubGrid
 }
 
-export function solve(grid: number[][], r: number = 0, c: number = 0, steps: { cell: { r: number, c: number }, grid: number[][] }[]) {
+export function solve(grid: number[][], r: number = 0, c: number = 0, steps: { cell: { r: number, c: number }, grid: number[][] }[], gridSize: number = 3) {
     steps.push({
         cell: { r, c },
         grid: grid.map(row => row.slice())
