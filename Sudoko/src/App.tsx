@@ -12,8 +12,10 @@ function App() {
     // Get the global state
     const globalState = useGlobalState()
 
+    const [title, setTitle] = useState(globalState.problem)
+
     // TODO: Function to generate a random grids
-    globalState.initalGrid = [
+    globalState.initalGrid = globalState.problem === 'Sudoko' ? [
         [0,7,0,0,0,4,0,0,0],
         [0,3,0,0,0,0,2,0,1],
         [1,0,6,0,0,0,0,4,0],
@@ -23,6 +25,11 @@ function App() {
         [0,0,5,2,0,6,0,0,0],
         [6,0,0,0,0,0,9,2,0],
         [0,0,0,3,7,0,0,0,0]
+    ] : [
+        [0,0,0,0],
+        [0,0,0,0],
+        [0,0,0,0],
+        [0,0,0,0],
     ]
     
     // Copy the initial grid to preserve the original state
@@ -30,6 +37,52 @@ function App() {
 
     // The current grid being displayed
     const [grid, setGrid] = useState<number[][]>(globalState.initalGrid)
+
+    useEffect(() => {
+        function getTitle() {
+            const url = document.URL
+            const title = url.split('#')[1]
+    
+            switch (title) {
+                case 'sudoko':
+                    return 'Sudoko'
+                case 'queens':
+                    return "N-Queens"
+                default:
+                    return "Sudoko"
+            }
+        }
+
+        // Get the title from the URL
+        function handleHashChange() {
+            globalState.initalGrid = globalState.problem === 'Sudoko' ? [
+                [0,7,0,0,0,4,0,0,0],
+                [0,3,0,0,0,0,2,0,1],
+                [1,0,6,0,0,0,0,4,0],
+                [0,5,1,0,0,3,0,0,0],
+                [0,6,0,1,5,0,8,0,0],
+                [4,0,0,8,0,0,0,0,0],
+                [0,0,5,2,0,6,0,0,0],
+                [6,0,0,0,0,0,9,2,0],
+                [0,0,0,3,7,0,0,0,0]
+            ] : [
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0]
+            ]
+            setGrid(globalState.initalGrid)
+            const title = getTitle()
+            globalState.problem = title
+            setTitle(title)
+        }
+
+        // Listen to hash changes
+        window.addEventListener('hashchange', () => handleHashChange());
+
+        // Cleanup listener on component unmount
+        return () => window.removeEventListener('hashchange', () => handleHashChange());
+    }, []);
 
     useEffect(() => {
         // Show answer without animation
@@ -54,15 +107,17 @@ function App() {
             }
         }, globalState.animationSpeed)
 
-        return () => clearInterval(interval)
+        return () => {
+            clearInterval(interval)
+        }
     }, [globalState.steps, globalState.animationSpeed])
 
     return (
         <HorizontalSection styles='h-full'>
             <Navbar />
             <VerticalSection styles='w-full h-full'>
-                <Title />
-                <Display grid={grid} setGrid={setGrid} />
+                <Title title={title} />
+                <Display key={`${title}-grid`} grid={grid} setGrid={setGrid} />
                 <Controls setGrid={setGrid} />
             </VerticalSection>
             <Footer />
