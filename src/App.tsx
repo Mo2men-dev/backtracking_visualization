@@ -15,6 +15,10 @@ function App() {
     const globalState = useGlobalState()
     const path = useLocation().pathname.split('/')[1]
 
+    // The current grid being displayed
+    const [grid, setGrid] = useState<number[][]>(globalState.initalGrid)
+    const [animationDone, setAnimationDone] = useState(false)
+
     switch (path) {
         case 'sudoko':
             globalState.problem = 'sudoko'
@@ -47,11 +51,8 @@ function App() {
     // Copy the initial grid to preserve the original state
     globalState.initalGridCopy = globalState.initalGrid.map(row => row.slice())
 
-    // The current grid being displayed
-    const [grid, setGrid] = useState<number[][]>(globalState.initalGrid)
-    const [animationDone, setAnimationDone] = useState(false)
-
     useEffect(() => {
+        // Reset the grid
         globalState.initalGrid = globalState.problem === 'sudoko' ? [
             [0,9,0,1,2,0,4,6,5],
             [0,0,0,8,5,6,9,0,3],
@@ -68,6 +69,7 @@ function App() {
             [0,0,0,0],
             [0,0,0,0]
         ]
+
         globalState.initalGridCopy = globalState.initalGrid.map(row => row.slice())
         globalState.gridSize = globalState.problem === 'sudoko' ? Math.sqrt(globalState.initalGrid[0].length) : globalState.initalGrid.length
         setGrid(globalState.initalGrid)
@@ -80,6 +82,7 @@ function App() {
         }
     }, [globalState.steps])
 
+    // not firing after the first render
     useEffect(() => {
         // Play animation
         const interval = setInterval(() => {
@@ -102,25 +105,25 @@ function App() {
         
                 // Update the animation done state
                 setAnimationDone(true)
-        
+
                 // Update the grid to the final frame
                 setGrid(globalState.steps[globalState.steps.length - 1].grid)
-        
+
                 clearInterval(interval)
             }
                         
         }
     }, globalState.animationSpeed)
-    
+
         return () => clearInterval(interval)
-    }, [globalState.animationSpeed])
+    }, [globalState.animationSpeed, globalState.pause])
 
     return (
         <HorizontalSection styles='h-full'>
             <Navbar />
             <VerticalSection styles='w-full h-full'>
                 <Title title={globalState.problem} />
-                <Display grid={grid} setGrid={setGrid} animationDone={animationDone} />
+                <Display animationDone={animationDone} grid={grid} setGrid={setGrid} />
                 <Controls setGrid={setGrid} />
             </VerticalSection>
             <Footer />

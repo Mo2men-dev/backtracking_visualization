@@ -36,7 +36,8 @@ export function play(startingIndex: number = 0, setGrid: React.Dispatch<React.Se
 }
 
 export function pause(setGrid: React.Dispatch<React.SetStateAction<number[][]>>, globalState: IntialStateType) {
-    if (globalState.currAnimationIndx === globalState.steps.length || globalState.currAnimationIndx === 0) return
+    if (globalState.currAnimationIndx === 0) return
+    if (globalState.currAnimationIndx === globalState.steps.length) globalState.currAnimationIndx = 0
 
     // Toggle the pause state
     globalState.pause = !globalState.pause
