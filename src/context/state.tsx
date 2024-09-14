@@ -3,6 +3,7 @@ import React, {createContext, ReactNode, useContext} from "react";
 export type IntialStateType = {
     initalGrid: number[][],
     initalGridCopy: number[][],
+    gridSize: number,
     animate: boolean,
     currCell: { r: number, c: number },
     steps: { cell: { r: number, c: number }, grid: number[][] }[],
@@ -19,6 +20,7 @@ interface StateProviderProps {
 const initalState: IntialStateType = {
     initalGrid: [],
     initalGridCopy: [],
+    gridSize: 9,
     animate: false,
     currCell: { r: 0, c: 0 },
     steps: [],

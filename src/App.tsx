@@ -7,6 +7,8 @@ import Controls from './components/Controls'
 import Display from './components/Display'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import { getTitle } from './utils/utils'
+import { reset } from './utils/controls'
 
 function App() {
     // Get the global state
@@ -38,45 +40,34 @@ function App() {
     // The current grid being displayed
     const [grid, setGrid] = useState<number[][]>(globalState.initalGrid)
 
+    function handleHashChange() {
+        globalState.initalGrid = globalState.problem === 'Sudoko' ? [
+            [0,7,0,0,0,4,0,0,0],
+            [0,3,0,0,0,0,2,0,1],
+            [1,0,6,0,0,0,0,4,0],
+            [0,5,1,0,0,3,0,0,0],
+            [0,6,0,1,5,0,8,0,0],
+            [4,0,0,8,0,0,0,0,0],
+            [0,0,5,2,0,6,0,0,0],
+            [6,0,0,0,0,0,9,2,0],
+            [0,0,0,3,7,0,0,0,0]
+        ] : [
+            [0,0,0,0],
+            [0,0,0,0],
+            [0,0,0,0],
+            [0,0,0,0]
+        ]
+
+        const title = getTitle()
+        globalState.problem = title
+        setTitle(title)
+
+        globalState.gridSize = title === 'Sudoko' ? Math.sqrt(globalState.initalGrid[0].length) : globalState.initalGrid.length
+        setGrid(globalState.initalGrid)
+        reset(setGrid, globalState)
+    }
+
     useEffect(() => {
-        function getTitle() {
-            const url = document.URL
-            const title = url.split('#')[1]
-    
-            switch (title) {
-                case 'sudoko':
-                    return 'Sudoko'
-                case 'queens':
-                    return "N-Queens"
-                default:
-                    return "Sudoko"
-            }
-        }
-
-        // Get the title from the URL
-        function handleHashChange() {
-            globalState.initalGrid = globalState.problem === 'Sudoko' ? [
-                [0,7,0,0,0,4,0,0,0],
-                [0,3,0,0,0,0,2,0,1],
-                [1,0,6,0,0,0,0,4,0],
-                [0,5,1,0,0,3,0,0,0],
-                [0,6,0,1,5,0,8,0,0],
-                [4,0,0,8,0,0,0,0,0],
-                [0,0,5,2,0,6,0,0,0],
-                [6,0,0,0,0,0,9,2,0],
-                [0,0,0,3,7,0,0,0,0]
-            ] : [
-                [0,0,0,0],
-                [0,0,0,0],
-                [0,0,0,0],
-                [0,0,0,0]
-            ]
-            setGrid(globalState.initalGrid)
-            const title = getTitle()
-            globalState.problem = title
-            setTitle(title)
-        }
-
         // Listen to hash changes
         window.addEventListener('hashchange', () => handleHashChange());
 
@@ -103,13 +94,20 @@ function App() {
 
                     // Move to the next "Animation Frame"
                     globalState.currAnimationIndx++
+                } else {
+                    // Animation is done
+                    globalState.animate = false
+
+                    // Update the grid to the final frame
+                    setGrid(globalState.steps[globalState.steps.length - 1].grid)
+
+                    clearInterval(interval)
                 }
+                
             }
         }, globalState.animationSpeed)
 
-        return () => {
-            clearInterval(interval)
-        }
+        return () => clearInterval(interval)
     }, [globalState.steps, globalState.animationSpeed])
 
     return (
@@ -117,7 +115,7 @@ function App() {
             <Navbar />
             <VerticalSection styles='w-full h-full'>
                 <Title title={title} />
-                <Display key={`${title}-grid`} grid={grid} setGrid={setGrid} />
+                <Display grid={grid} setGrid={setGrid} />
                 <Controls setGrid={setGrid} />
             </VerticalSection>
             <Footer />
