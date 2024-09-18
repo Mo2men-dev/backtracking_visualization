@@ -9,6 +9,7 @@ export type IntialStateType = {
     steps: { cell: { r: number, c: number }, grid: number[][] }[],
     currAnimationIndx: number,
     animationSpeed: number,
+    animationDone: boolean,
     pause: boolean,
     problem: string,
 }
@@ -26,6 +27,7 @@ const initalState: IntialStateType = {
     steps: [],
     currAnimationIndx: 0,
     animationSpeed: 250,
+    animationDone: false,
     pause: true,
     problem: "sudoko",
 }

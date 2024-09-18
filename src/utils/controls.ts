@@ -57,6 +57,7 @@ export function reset(setGrid: React.Dispatch<React.SetStateAction<number[][]>>,
     setGrid(globalState.steps[0].grid)
     globalState.currAnimationIndx = 0
     globalState.currCell = { r: 0, c: 0 }
+    globalState.animationDone = false
 }
 
 export function nextStep(setGrid: React.Dispatch<React.SetStateAction<number[][]>>, globalState: IntialStateType) {

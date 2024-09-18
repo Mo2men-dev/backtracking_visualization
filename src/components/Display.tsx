@@ -5,13 +5,13 @@ import Button from './Button'
 import Grid from './Grid'
 import { useGlobalState } from '../context/state'
 
-function Display({ grid, setGrid, animationDone }: { grid: number[][], setGrid: React.Dispatch<React.SetStateAction<number[][]>>, animationDone: boolean } ) {
+function Display({ grid, setGrid }: { grid: number[][], setGrid: React.Dispatch<React.SetStateAction<number[][]>> } ) {
     const globalState = useGlobalState()
 
     return (
         <HorizontalSection styles='flex flex-1 w-fit justify-evenly items-center animate-fade-in opacity-0'>
-            <Grid key={`${animationDone}`} grid={grid} />
-            <Button text='Solve' props={{ onClick: () => play(0, setGrid, globalState) }} />
+            <Grid grid={grid} />
+            <Button text='Solve' props={{ onClick: () => play(0, setGrid, globalState), disabled: globalState.animationDone }} />
         </HorizontalSection>
     )
 }

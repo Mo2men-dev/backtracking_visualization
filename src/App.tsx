@@ -13,11 +13,12 @@ import { useLocation } from 'react-router-dom'
 function App() {
     // Get the global state
     const globalState = useGlobalState()
+
+    // Get the current path (name of the problem)
     const path = useLocation().pathname.split('/')[1]
 
     // The current grid being displayed
     const [grid, setGrid] = useState<number[][]>(globalState.initalGrid)
-    const [animationDone, setAnimationDone] = useState(false)
 
     switch (path) {
         case 'sudoko':
@@ -51,27 +52,11 @@ function App() {
     // Copy the initial grid to preserve the original state
     globalState.initalGridCopy = globalState.initalGrid.map(row => row.slice())
 
-    useEffect(() => {
-        // Reset the grid
-        globalState.initalGrid = globalState.problem === 'sudoko' ? [
-            [0,9,0,1,2,0,4,6,5],
-            [0,0,0,8,5,6,9,0,3],
-            [0,1,0,0,9,4,0,0,8],
-            [0,3,0,7,0,8,0,0,6],
-            [1,0,0,0,0,2,0,3,0],
-            [8,0,0,9,3,5,1,2,0],
-            [7,0,0,0,6,0,3,0,2],
-            [6,5,1,2,8,0,0,9,4],
-            [2,4,3,0,7,9,0,0,0]
-        ] : [
-            [0,0,0,0],
-            [0,0,0,0],
-            [0,0,0,0],
-            [0,0,0,0]
-        ]
+    // Set the grid size
+    globalState.gridSize = globalState.problem === 'sudoko' ? Math.sqrt(globalState.initalGrid[0].length) : globalState.initalGrid.length
 
-        globalState.initalGridCopy = globalState.initalGrid.map(row => row.slice())
-        globalState.gridSize = globalState.problem === 'sudoko' ? Math.sqrt(globalState.initalGrid[0].length) : globalState.initalGrid.length
+    useEffect(() => {
+        globalState.animationDone = false
         setGrid(globalState.initalGrid)
         reset(setGrid, globalState)
 
@@ -82,39 +67,35 @@ function App() {
         }
     }, [globalState.steps])
 
-    // not firing after the first render
     useEffect(() => {
         // Play animation
         const interval = setInterval(() => {
-        if (!globalState.pause) {
-            if (globalState.currAnimationIndx < globalState.steps.length) {
-                // Update the animation done state
-                setAnimationDone(false)
-        
-                // The current cell being processed by the algorithm
-                globalState.currCell = globalState.steps[globalState.currAnimationIndx].cell
-        
-                // Update the grid
-                setGrid(globalState.steps[globalState.currAnimationIndx].grid)
-        
-                // Move to the next "Animation Frame"
-                globalState.currAnimationIndx++
-            } else {
-                // Animation is done
-                globalState.animate = false
-        
-                // Update the animation done state
-                setAnimationDone(true)
+            if (!globalState.pause) {
+                if (globalState.currAnimationIndx < globalState.steps.length - 1) {
+                    // The current cell being processed by the algorithm
+                    globalState.currCell = globalState.steps[globalState.currAnimationIndx].cell
 
-                // Update the grid to the final frame
-                setGrid(globalState.steps[globalState.steps.length - 1].grid)
+                    // Update the grid
+                    setGrid(globalState.steps[globalState.currAnimationIndx].grid)
 
-                clearInterval(interval)
+                    // Move to the next "Animation Frame"
+                    globalState.currAnimationIndx++
+                } else {
+                    // Animation is done
+                    globalState.animationDone = true    
+                    
+                    // Stop the animation
+                    globalState.animate = false
+
+                    // Update the grid
+                    setGrid(globalState.steps[globalState.currAnimationIndx].grid)
+
+                    // Clear the interval
+                    clearInterval(interval)
+                }
             }
-                        
-        }
-    }, globalState.animationSpeed)
-
+        }, globalState.animationSpeed)
+        
         return () => clearInterval(interval)
     }, [globalState.animationSpeed, globalState.pause])
 
@@ -123,7 +104,7 @@ function App() {
             <Navbar />
             <VerticalSection styles='w-full h-full'>
                 <Title title={globalState.problem} />
-                <Display animationDone={animationDone} grid={grid} setGrid={setGrid} />
+                <Display grid={grid} setGrid={setGrid} />
                 <Controls setGrid={setGrid} />
             </VerticalSection>
             <Footer />
