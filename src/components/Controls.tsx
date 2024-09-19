@@ -5,7 +5,7 @@ import { reset, pause, nextStep } from '../utils/controls'
 import Button from './Button'
 import { useGlobalState } from '../context/state'
 
-function Controls({ setGrid }: { setGrid: React.Dispatch<React.SetStateAction<number[][]>> }) {
+function Controls() {
     const globalState = useGlobalState()
 
     function handleSpeedChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -27,9 +27,9 @@ function Controls({ setGrid }: { setGrid: React.Dispatch<React.SetStateAction<nu
                     onChange={(e) => handleSpeedChange(e)} />
                 </VerticalSection>
                 <VerticalSection styles='flex-initial justify-evenly items-center mt-4'>
-                    <Button text='Reset' props={{ onClick: () => reset(setGrid, globalState), disabled: globalState.currAnimationIndx === 0 }} />
-                    <Button text={ globalState.pause ? 'Resume' : 'Pause' } props={{ onClick: () => pause(setGrid, globalState), disabled: globalState.currAnimationIndx === 0 }} />
-                    <Button text='Next Step' props={{ onClick: () => nextStep(setGrid, globalState), disabled: !globalState.pause || globalState.currAnimationIndx === 0 }} />
+                    <Button text='Reset' props={{ onClick: () => reset(globalState), disabled: globalState.currAnimationIndx === 0 }} />
+                    <Button text={ globalState.pause ? 'Resume' : 'Pause' } props={{ onClick: () => pause(globalState), disabled: globalState.currAnimationIndx === 0 }} />
+                    <Button text='Next Step' props={{ onClick: () => nextStep(globalState), disabled: !globalState.pause || globalState.currAnimationIndx === 0 }} />
                 </VerticalSection>
             </div>
         </HorizontalSection>

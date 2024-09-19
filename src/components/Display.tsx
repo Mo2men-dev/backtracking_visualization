@@ -1,17 +1,17 @@
-import React from 'react'
 import HorizontalSection from '../layout/HorizontalSection'
 import { play } from '../utils/controls'
 import Button from './Button'
 import Grid from './Grid'
-import { useGlobalState } from '../context/state'
+import { useGlobalDispatch, useGlobalState } from '../context/state'
 
-function Display({ grid, setGrid }: { grid: number[][], setGrid: React.Dispatch<React.SetStateAction<number[][]>> } ) {
+function Display() {
     const globalState = useGlobalState()
+    const dispatch = useGlobalDispatch()
 
     return (
         <HorizontalSection styles='flex flex-1 w-fit justify-evenly items-center animate-fade-in opacity-0'>
-            <Grid grid={grid} />
-            <Button text='Solve' props={{ onClick: () => play(0, setGrid, globalState), disabled: globalState.animationDone }} />
+            <Grid />
+            <Button text='Solve' props={{ onClick: () => play(0, dispatch, globalState), disabled: globalState.animationDone }} />
         </HorizontalSection>
     )
 }

@@ -1,26 +1,11 @@
-import React, {createContext, ReactNode, useContext} from "react";
-
-export type IntialStateType = {
-    initalGrid: number[][],
-    initalGridCopy: number[][],
-    gridSize: number,
-    animate: boolean,
-    currCell: { r: number, c: number },
-    steps: { cell: { r: number, c: number }, grid: number[][] }[],
-    currAnimationIndx: number,
-    animationSpeed: number,
-    animationDone: boolean,
-    pause: boolean,
-    problem: string,
-}
-
-interface StateProviderProps {
-    children: ReactNode;
-}
+import React, {createContext, useReducer, useContext, Dispatch} from "react";
+import { IntialStateType, StateProviderProps } from "../types/state";
+import { StateAction } from "../types/actions";
 
 const initalState: IntialStateType = {
     initalGrid: [],
     initalGridCopy: [],
+    currentGrid: [],
     gridSize: 9,
     animate: false,
     currCell: { r: 0, c: 0 },
@@ -33,12 +18,51 @@ const initalState: IntialStateType = {
 }
 
 const GlobalStateContext = createContext(initalState)
-export const useGlobalState = () => useContext(GlobalStateContext)
+const GlobalDispatchContext = createContext<Dispatch<any>>(() => {})
+
+const reducer = (state: IntialStateType, action: StateAction): IntialStateType => {
+    switch (action.type) {
+        case 'SET_INITIAL_GRID':
+            return { ...state, initalGrid: action.payload };
+        case 'SET_INITIAL_GRID_COPY':
+            return { ...state, initalGridCopy: action.payload };
+        case 'SET_CURRENT_GRID':
+            return { ...state, currentGrid: action.payload };
+        case 'SET_GRID_SIZE':
+            return { ...state, gridSize: action.payload };
+        case 'SET_PAUSE':
+            return { ...state, pause: action.payload };
+        case 'SET_CURR_ANIMATION_INDX':
+            return { ...state, currAnimationIndx: action.payload };
+        case 'SET_STEPS':
+            return { ...state, steps: action.payload };
+        case 'SET_ANIMATION_SPEED':
+            return { ...state, animationSpeed: action.payload };
+        case 'SET_CURR_CELL':
+            return { ...state, currCell: action.payload };
+        case 'SET_ANIMATION_DONE':
+            return { ...state, animationDone: action.payload };
+        case 'SET_ANIMATE':
+            return { ...state, animate: action.payload };
+        case 'ADD_STEP':
+            return { ...state, steps: [...state.steps, action.payload] };
+        default:
+            return state;
+    }
+};
 
 export const GlobalStateProvider: React.FC<StateProviderProps> = ({ children }) => {
+    const [state, dispatch] = useReducer(reducer, initalState);
+
     return (
-        <GlobalStateContext.Provider value={initalState}>
-            {children}
+        <GlobalStateContext.Provider value={state}>
+            <GlobalDispatchContext.Provider value={dispatch}>
+                {children}
+            </GlobalDispatchContext.Provider>
         </GlobalStateContext.Provider>
     )
 }
+
+
+export const useGlobalState = () => useContext(GlobalStateContext)
+export const useGlobalDispatch = () => useContext(GlobalDispatchContext)
