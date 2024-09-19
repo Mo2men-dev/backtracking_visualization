@@ -2,63 +2,67 @@ import { IntialStateType } from "../types/state"
 import { solveQueens } from "./queens"
 import { solveSudoko } from "./sudoko"
 
-export function play(startingIndex: number = 0, dispatch: React.Dispatch<any>, globalState: IntialStateType) {
+export function play(dispatch: React.Dispatch<any>, globalState: IntialStateType) {
     // Start the animation
     dispatch({ type: 'SET_ANIMATE', payload: true })
 
     // Reset the pause state
     dispatch({ type: 'SET_PAUSE', payload: false })
 
-    // Clear the steps array
-    dispatch({ type: 'SET_STEPS', payload: [] })
-
-    // Solve the grid and store the steps (Trigger the useEffect)
-    switch (globalState.problem) {
-        case 'sudoko':
-            solveSudoko(globalState.initalGridCopy, 0, 0, dispatch, globalState.gridSize)
-            break
-        case 'n-queens':
-            solveQueens(globalState.initalGridCopy, 0, 0, globalState.steps, globalState.gridSize)
-            break
-        default:
-            break
+    // If the problem is not solved yet
+    if (globalState.steps.length === 0) {
+        // Solve the grid and store the steps (Trigger the useEffect)
+        switch (globalState.problem) {
+            case 'sudoko':
+                solveSudoko(globalState.initalGridCopy, 0, 0, dispatch, globalState.gridSize)
+                break
+            case 'n-queens':
+                solveQueens(globalState.initalGridCopy, 0, 0, dispatch, globalState.gridSize)
+                break
+            default:
+                break
+        }
     }
 
-    // Reset the current animation index
-    dispatch({ type: 'SET_CURR_ANIMATION_INDX', payload: startingIndex })
+    // Restart the animation (when in the middle of the animation)
+    dispatch({ type: 'SET_CURR_ANIMATION_INDX', payload: 0 })
 }
 
-export function pause(globalState: IntialStateType) {
+export function pause(globalState: IntialStateType, dispatch: React.Dispatch<any>) {
     if (globalState.currAnimationIndx === 0) return
     if (globalState.currAnimationIndx === globalState.steps.length) globalState.currAnimationIndx = 0
 
     // Toggle the pause state
-    globalState.pause = !globalState.pause
+    dispatch({ type: 'SET_PAUSE', payload: !globalState.pause })
 
     // Update the current cell
-    globalState.currCell = globalState.steps[globalState.currAnimationIndx].cell
+    dispatch({ type: 'SET_CURR_CELL', payload: globalState.steps[globalState.currAnimationIndx].cell })
 
     // Update the grid (to rerender the tree)
-    globalState.currentGrid = globalState.steps[globalState.currAnimationIndx].grid
+    dispatch({ type: 'SET_CURRENT_GRID', payload: globalState.steps[globalState.currAnimationIndx].grid })
 }
 
-export function reset(globalState: IntialStateType) {
+export function reset(globalState: IntialStateType, dispatch: React.Dispatch<any>) {
     if (globalState.currAnimationIndx === 0) return
-    if (!globalState.pause) pause(globalState)
+    if (!globalState.pause) pause(globalState, dispatch)
     if (globalState.animate) globalState.animate = false
 
-    globalState.currentGrid = globalState.steps[0].grid
-    globalState.currAnimationIndx = 0
-    globalState.currCell = { r: 0, c: 0 }
-    globalState.animationDone = false
+    dispatch({ type: 'SET_CURRENT_GRID', payload: globalState.steps[0].grid })
+    dispatch({ type: 'SET_CURR_ANIMATION_INDX', payload: 0 })
+    dispatch({ type: 'SET_CURR_CELL', payload: { r: 0, c: 0 } })
+    dispatch({ type: 'SET_ANIMATION_DONE', payload: false })
 }
 
-export function nextStep(globalState: IntialStateType) {
-    if (globalState.currAnimationIndx === globalState.steps.length) return
+export function nextStep(globalState: IntialStateType, dispatch: React.Dispatch<any>) {
+    if (globalState.currAnimationIndx === globalState.steps.length - 1) {
+        dispatch({ type: 'SET_ANIMATION_DONE', payload: true })
+        dispatch({ type: 'SET_ANIMATE', payload: false })
+        return
+    }
     if (globalState.currAnimationIndx === 0) return
     if (!globalState.pause) return
-    globalState.currAnimationIndx++
-    globalState.currCell = globalState.steps[globalState.currAnimationIndx].cell
 
-    globalState.currentGrid = globalState.steps[globalState.currAnimationIndx].grid
+    globalState.currAnimationIndx++
+    dispatch({ type: 'SET_CURR_CELL', payload: globalState.steps[globalState.currAnimationIndx].cell })
+    dispatch({ type: 'SET_CURRENT_GRID', payload: globalState.steps[globalState.currAnimationIndx].grid })
 }

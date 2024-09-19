@@ -1,5 +1,4 @@
 export type StateAction =
-    | AddStepAction
     | SetInitialGridAction
     | SetInitialGridCopyAction
     | SetCurrentGridAction
@@ -10,7 +9,8 @@ export type StateAction =
     | SetAnimationSpeedAction
     | SetCurrCellAction
     | SetAnimationDoneAction
-    | SetAnimateAction;
+    | SetAnimateAction
+    | AddStepAction;
 
 interface SetInitialGridAction {
     type: 'SET_INITIAL_GRID';

@@ -17,7 +17,11 @@ function isValidSudoko(grid: number[][], r: number, c: number, num: number, grid
 }
 
 export function solveSudoko(grid: number[][], r: number = 0, c: number = 0, dispatch: React.Dispatch<any>, gridSize: number = 3) {
-    dispatch({ type: 'ADD_STEP', payload: { grid: grid.map(row => row.slice()), cell: { r, c } } })
+    dispatch({ type: 'ADD_STEP', payload: { 
+        grid: grid.map(row => row.slice()),
+        cell: { r, c } }
+    })
+
     if (r === gridSize ** 2) {
         return true
     }

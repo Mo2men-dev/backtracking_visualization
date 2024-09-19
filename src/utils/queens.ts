@@ -20,18 +20,15 @@ function isValidQueens(board: number[][], row: number, col: number): boolean {
   return true;
 }
 
-export function solveQueens(grid: number[][], r: number = 0, c: number = 0, steps: { cell: { r: number, c: number }, grid: number[][] }[], gridSize: number = 4): boolean {
-    steps.push({
-        cell: { r, c },
-        grid: grid.map(row => row.slice())
-    });
+export function solveQueens(grid: number[][], r: number = 0, c: number = 0, dispatch: React.Dispatch<any>, gridSize: number = 4): boolean {
+    dispatch({ type: 'ADD_STEP', payload: { grid: grid.map(row => row.slice()), cell: { r, c } } });
     
     if (c === gridSize) return true;
     
     for (let i = 0; i < gridSize; i++) {
         if (isValidQueens(grid, i, c)) {
             grid[i][c] = 1;
-            if (solveQueens(grid, i, c + 1, steps, gridSize)) return true;
+            if (solveQueens(grid, i, c + 1, dispatch, gridSize)) return true;
             grid[i][c] = 0;
         }
     }

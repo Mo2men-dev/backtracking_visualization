@@ -11,7 +11,7 @@ function Display() {
     return (
         <HorizontalSection styles='flex flex-1 w-fit justify-evenly items-center animate-fade-in opacity-0'>
             <Grid />
-            <Button text='Solve' props={{ onClick: () => play(0, dispatch, globalState), disabled: globalState.animationDone }} />
+            <Button text='Solve' props={{ onClick: () => play(dispatch, globalState), disabled: globalState.animationDone }} />
         </HorizontalSection>
     )
 }
