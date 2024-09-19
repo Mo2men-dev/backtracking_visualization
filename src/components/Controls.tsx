@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import HorizontalSection from '../layout/HorizontalSection'
 import VerticalSection from '../layout/VerticalSection'
 import { reset, pause, nextStep } from '../utils/controls'
@@ -8,14 +8,11 @@ import { useGlobalState } from '../context/state'
 function Controls({ setGrid }: { setGrid: React.Dispatch<React.SetStateAction<number[][]>> }) {
     const globalState = useGlobalState()
 
-    // The speed of the animation
-    const [speed, setSpeed] = useState(250)
-
     function handleSpeedChange(e: React.ChangeEvent<HTMLInputElement>) {
-        setSpeed(parseInt(e.target.value))
         globalState.animationSpeed = parseInt(e.target.value)
         if (globalState.pause) return
     }
+
     return (
         <HorizontalSection styles='flex flex-1'>
             <h1 className='text-2xl font-bold w-full flex animate-fade-in-right-delay opacity-0'>Controls</h1>
@@ -26,7 +23,7 @@ function Controls({ setGrid }: { setGrid: React.Dispatch<React.SetStateAction<nu
                     min="50"
                     max="500"
                     step="50"
-                    value={speed} 
+                    value={globalState.animationSpeed} 
                     onChange={(e) => handleSpeedChange(e)} />
                 </VerticalSection>
                 <VerticalSection styles='flex-initial justify-evenly items-center mt-4'>
