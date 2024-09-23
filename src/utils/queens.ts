@@ -35,3 +35,13 @@ export function solveQueens(grid: number[][], r: number = 0, c: number = 0, disp
     
     return false;
 }
+
+export function generateQueensGrid(gridSize: number = 4) {
+    let grid: number[][] = [];
+    
+    for (let i = 0; i < gridSize; i++) {
+        grid.push(new Array(gridSize).fill(0));
+    }
+    
+    return grid;
+}

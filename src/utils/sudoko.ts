@@ -55,7 +55,7 @@ export function solveSudoko(grid: number[][], r: number = 0, c: number = 0, disp
     return false
 }
 
-export function generateGrid(dispatch: React.Dispatch<any>, gridSize: number = 3, difficulty: number = 0.5) {
+export function generateSudokoGrid(dispatch: React.Dispatch<any>, gridSize: number = 3, difficulty: number = 0.5) {
     let grid: number[][] = [];
 
     for (let i = 0; i < gridSize ** 2; i++) {

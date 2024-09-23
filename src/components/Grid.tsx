@@ -2,19 +2,15 @@ import { useEffect } from 'react'
 import { useGlobalDispatch, useGlobalState } from '../context/state'
 import Cell from './Cell'
 import Tile from './Tile'
-import { generateGrid } from '../utils/sudoko'
+import { generateSudokoGrid } from '../utils/sudoko'
+import { generateQueensGrid } from '../utils/queens'
 
 function Grid() {
     const globalState = useGlobalState()
     const dispatch = useGlobalDispatch()
 
     useEffect(() => {
-        const initialGrid = globalState.problem === 'sudoko' ? generateGrid(dispatch) : [
-            [0,0,0,0],
-            [0,0,0,0],
-            [0,0,0,0],
-            [0,0,0,0],
-        ];
+        const initialGrid = globalState.problem === 'sudoko' ? generateSudokoGrid(dispatch) : generateQueensGrid();
 
         dispatch({ type: 'SET_INITIAL_GRID', payload: initialGrid });
         dispatch({ type: 'SET_INITIAL_GRID_COPY', payload: initialGrid.map(row => row.slice()) });
