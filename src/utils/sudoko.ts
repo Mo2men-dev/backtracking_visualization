@@ -16,29 +16,35 @@ function isValidSudoko(grid: number[][], r: number, c: number, num: number, grid
     return !isInRow && !isInCol && !isInSubGrid
 }
 
-export function solveSudoko(grid: number[][], r: number = 0, c: number = 0, dispatch: React.Dispatch<any>, gridSize: number = 3) {
-    dispatch({ type: 'ADD_STEP', payload: { 
-        grid: grid.map(row => row.slice()),
-        cell: { r, c } }
-    })
+export function solveSudoko(grid: number[][], r: number = 0, c: number = 0, dispatch: React.Dispatch<any>, gridSize: number = 3, recordSteps: boolean = true) {
+    if (recordSteps) {
+        dispatch({ type: 'ADD_STEP', payload: { 
+            grid: grid.map(row => row.slice()),
+            cell: { r, c } }
+        })
+    }
 
     if (r === gridSize ** 2) {
         return true
     }
 
     if (c === gridSize ** 2) {
-        return solveSudoko(grid, r + 1, 0, dispatch)
+        return solveSudoko(grid, r + 1, 0, dispatch, gridSize, recordSteps)
     }
 
     if (grid[r][c] !== 0) {
-        return solveSudoko(grid, r, c + 1, dispatch)
+        return solveSudoko(grid, r, c + 1, dispatch, gridSize, recordSteps)
     }
 
     for (let num = 1; num <= gridSize ** 2; num++) {
+
+        // Randomize the number to be placed in the cell (this is for generating the grid only)
+        if (!recordSteps) num = Math.floor(Math.random() * gridSize ** 2) + 1
+
         if (isValidSudoko(grid, r, c, num)) {
             grid[r][c] = num
 
-            if (solveSudoko(grid, r, c + 1, dispatch)) {
+            if (solveSudoko(grid, r, c + 1, dispatch, gridSize, recordSteps)) {
                 return true
             }
 
@@ -47,4 +53,29 @@ export function solveSudoko(grid: number[][], r: number = 0, c: number = 0, disp
     }
 
     return false
+}
+
+export function generateGrid(dispatch: React.Dispatch<any>, gridSize: number = 3, difficulty: number = 0.5) {
+    let grid: number[][] = [];
+
+    for (let i = 0; i < gridSize ** 2; i++) {
+        grid.push(new Array(gridSize ** 2).fill(0))
+    }
+
+    solveSudoko(grid, 0, 0, dispatch, gridSize, false);
+
+    let cells = gridSize ** 4
+    let remainingCells = Math.floor(cells * difficulty)
+
+    while (remainingCells > 0) {
+        let r = Math.floor(Math.random() * gridSize ** 2)
+        let c = Math.floor(Math.random() * gridSize ** 2)
+
+        if (grid[r][c] !== 0) {
+            grid[r][c] = 0
+            remainingCells--
+        }
+    }
+
+    return grid;
 }

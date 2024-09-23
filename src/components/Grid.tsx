@@ -2,24 +2,14 @@ import { useEffect } from 'react'
 import { useGlobalDispatch, useGlobalState } from '../context/state'
 import Cell from './Cell'
 import Tile from './Tile'
+import { generateGrid } from '../utils/sudoko'
 
 function Grid() {
     const globalState = useGlobalState()
     const dispatch = useGlobalDispatch()
 
     useEffect(() => {
-        // TODO: Function to generate random grid
-        const initialGrid = globalState.problem === 'sudoko' ? [
-            [0,9,0,1,2,0,4,6,5],
-            [0,0,0,8,5,6,9,0,3],
-            [0,1,0,0,9,4,0,0,8],
-            [0,3,0,7,0,8,0,0,6],
-            [1,0,0,0,0,2,0,3,0],
-            [8,0,0,9,3,5,1,2,0],
-            [7,0,0,0,6,0,3,0,2],
-            [6,5,1,2,8,0,0,9,4],
-            [2,4,3,0,7,9,0,0,0]
-        ] : [
+        const initialGrid = globalState.problem === 'sudoko' ? generateGrid(dispatch) : [
             [0,0,0,0],
             [0,0,0,0],
             [0,0,0,0],
