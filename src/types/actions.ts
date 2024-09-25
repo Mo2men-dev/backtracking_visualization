@@ -1,4 +1,5 @@
 export type StateAction =
+    | SetDifficultyAction
     | SetInitialGridAction
     | SetInitialGridCopyAction
     | SetCurrentGridAction
@@ -65,6 +66,11 @@ interface SetAnimationDoneAction {
 interface SetAnimateAction {
     type: 'SET_ANIMATE';
     payload: boolean;
+}
+
+interface SetDifficultyAction {
+    type: 'SET_DIFFICULTY';
+    payload: number;
 }
 
 interface AddStepAction {

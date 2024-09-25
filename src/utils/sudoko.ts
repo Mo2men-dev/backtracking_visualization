@@ -55,7 +55,7 @@ export function solveSudoko(grid: number[][], r: number = 0, c: number = 0, disp
     return false
 }
 
-export function generateSudokoGrid(dispatch: React.Dispatch<any>, gridSize: number = 3, difficulty: number = 0.5) {
+export function generateSudokoGrid(dispatch: React.Dispatch<any>, difficulty: number = 0.5, gridSize: number = 3) {
     let grid: number[][] = [];
 
     for (let i = 0; i < gridSize ** 2; i++) {
@@ -65,7 +65,7 @@ export function generateSudokoGrid(dispatch: React.Dispatch<any>, gridSize: numb
     solveSudoko(grid, 0, 0, dispatch, gridSize, false);
 
     let cells = gridSize ** 4
-    let remainingCells = Math.floor(cells * difficulty)
+    let remainingCells = Math.floor(cells * difficulty / 100)
 
     while (remainingCells > 0) {
         let r = Math.floor(Math.random() * gridSize ** 2)

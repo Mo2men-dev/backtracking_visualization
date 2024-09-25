@@ -10,7 +10,7 @@ function Grid() {
     const dispatch = useGlobalDispatch()
 
     useEffect(() => {
-        const initialGrid = globalState.problem === 'sudoko' ? generateSudokoGrid(dispatch) : generateQueensGrid();
+        const initialGrid = globalState.problem === 'sudoko' ? generateSudokoGrid(dispatch, globalState.sudokuDifficulty) : generateQueensGrid();
 
         dispatch({ type: 'SET_INITIAL_GRID', payload: initialGrid });
         dispatch({ type: 'SET_INITIAL_GRID_COPY', payload: initialGrid.map(row => row.slice()) });

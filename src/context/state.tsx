@@ -11,6 +11,7 @@ const initalState: IntialStateType = {
     currCell: { r: 0, c: 0 },
     steps: [],
     currAnimationIndx: 0,
+    sudokuDifficulty: 50,
     animationSpeed: 250,
     animationDone: false,
     pause: true,
@@ -44,6 +45,8 @@ const reducer = (state: IntialStateType, action: StateAction): IntialStateType =
             return { ...state, animationDone: action.payload };
         case 'SET_ANIMATE':
             return { ...state, animate: action.payload };
+        case 'SET_DIFFICULTY':
+            return { ...state, sudokuDifficulty: action.payload };
         case 'ADD_STEP':
             return { ...state, steps: [...state.steps, action.payload] };
         default:

@@ -9,6 +9,7 @@ export type IntialStateType = {
     currCell: { r: number, c: number },
     steps: { cell: { r: number, c: number }, grid: number[][] }[],
     currAnimationIndx: number,
+    sudokuDifficulty: number,
     animationSpeed: number,
     animationDone: boolean,
     pause: boolean,

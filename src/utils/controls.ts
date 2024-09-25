@@ -1,6 +1,7 @@
 import { IntialStateType } from "../types/state"
-import { solveQueens } from "./queens"
+import { generateQueensGrid, solveQueens } from "./queens"
 import { solveSudoko } from "./sudoko"
+import { generateSudokoGrid } from "./sudoko"
 
 export function play(dispatch: React.Dispatch<any>, globalState: IntialStateType) {
     // Start the animation
@@ -65,4 +66,19 @@ export function nextStep(globalState: IntialStateType, dispatch: React.Dispatch<
     globalState.currAnimationIndx++
     dispatch({ type: 'SET_CURR_CELL', payload: globalState.steps[globalState.currAnimationIndx].cell })
     dispatch({ type: 'SET_CURRENT_GRID', payload: globalState.steps[globalState.currAnimationIndx].grid })
+}
+
+export function generate(globalState: IntialStateType, dispatch: React.Dispatch<any>) {
+    if (!globalState.pause) pause(globalState, dispatch)
+    if (globalState.animate) globalState.animate = false
+
+    // Generate the grid
+    const grid = globalState.problem === 'sudoko' ? generateSudokoGrid(dispatch, globalState.sudokuDifficulty) : generateQueensGrid(globalState.gridSize)
+
+    dispatch({ type: 'SET_STEPS', payload: [] })
+    dispatch({ type: 'SET_CURRENT_GRID', payload: grid })
+    dispatch({ type: 'SET_CURR_CELL', payload: { r: 0, c: 0 } })
+    dispatch({ type: 'SET_CURR_ANIMATION_INDX', payload: 0 })
+    dispatch({ type: 'SET_INITIAL_GRID', payload: grid });
+    dispatch({ type: 'SET_INITIAL_GRID_COPY', payload: grid.map(row => row.slice()) });
 }
