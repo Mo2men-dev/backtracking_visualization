@@ -71,7 +71,7 @@ export function solveSudoko(grid: number[][], r: number = 0, c: number = 0, disp
                     grid: grid.map(row => row.slice()),
                     cell: { r, c: c + 1 },
                     description: {
-                        type: 'invalid',
+                        type: 'check',
                         text: `Invalid number. Trying... ${num}`
                     }
                 }

@@ -52,12 +52,12 @@ export function checkeredBackground(i: number, j: number) {
 
 export function stepType(type: string) {
     switch (type) {
+        case 'check':
+            return 'text-[#4cc9f0]'
         case 'backtrack':
             return 'text-[#ff74d4] italic'
-        case 'invalid':
-            return 'text-[#ffd500]'
         case 'skip':
-            return 'text-[#4cc9f0]'
+            return 'text-[#00ff00]'
         default:
             return 'text-white'
     }

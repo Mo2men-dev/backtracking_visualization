@@ -30,7 +30,7 @@ function Steps() {
 					key={i}
 					ref={bottomRef}
 					className="text-sm p-2 bg-[#403d39] my-1 rounded-md">
-					Step: {i}
+					Step: {i + 1}
 					<span className={`flex justify-between items-center font-bold ${stepType(step.type)}`}>
 						{step.text}
 					</span>

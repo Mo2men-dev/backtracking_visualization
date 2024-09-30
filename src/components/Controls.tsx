@@ -36,8 +36,8 @@ function Controls() {
                 </VerticalSection>
             </HorizontalSection>
             <hr className='my-5 mx-auto w-4/5 animate-fade-in-right-delay opacity-0' />
-            <h1 className='text-2xl font-bold w-full flex animate-fade-in-right-delay opacity-0'>Steps</h1>
-            <HorizontalSection styles='p-2 max-h-64 h-64 overflow-y-auto'>
+            <HorizontalSection styles='p-2 max-h-64 h-64 animate-fade-in-right-delay opacity-0 overflow-y-auto'>
+                <h1 className='text-2xl font-bold w-full flex'>Steps</h1>
                 <Steps />
             </HorizontalSection>
         </HorizontalSection>
