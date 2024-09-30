@@ -24,7 +24,6 @@ function Grid() {
                 if (globalState.currAnimationIndx < globalState.steps.length - 1) {
                     dispatch({ type: 'SET_CURR_CELL', payload: globalState.steps[globalState.currAnimationIndx].cell });
                     dispatch({ type: 'SET_CURRENT_GRID', payload: globalState.steps[globalState.currAnimationIndx].grid });
-                    console.log(globalState.steps[globalState.currAnimationIndx].description.text);
                     dispatch({ type: 'SET_CURR_ANIMATION_INDX', payload: globalState.currAnimationIndx + 1 });
                 } else {
                     dispatch({ type: 'SET_ANIMATION_DONE', payload: true });

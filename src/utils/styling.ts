@@ -49,3 +49,16 @@ export function checkeredBackground(i: number, j: number) {
         return 'bg-black'
     }
 }
+
+export function stepType(type: string) {
+    switch (type) {
+        case 'backtrack':
+            return 'text-[#ff74d4] italic'
+        case 'invalid':
+            return 'text-[#ffd500]'
+        case 'skip':
+            return 'text-[#4cc9f0]'
+        default:
+            return 'text-white'
+    }
+}
