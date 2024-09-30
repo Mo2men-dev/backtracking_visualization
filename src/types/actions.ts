@@ -45,7 +45,7 @@ interface SetCurrAnimationIndxAction {
 
 interface SetStepsAction {
     type: 'SET_STEPS';
-    payload: { cell: { r: number, c: number }, grid: number[][] }[];
+    payload: { cell: { r: number, c: number }, grid: number[][], description: { type: string, text: string } }[];
 }
 
 interface SetAnimationSpeedAction {
@@ -75,5 +75,5 @@ interface SetDifficultyAction {
 
 interface AddStepAction {
     type: 'ADD_STEP';
-    payload: { cell: { r: number, c: number }, grid: number[][] };
+    payload: { cell: { r: number, c: number }, grid: number[][], description: { type: string, text: string } };
 }

@@ -7,7 +7,9 @@ export type IntialStateType = {
     gridSize: number,
     animate: boolean,
     currCell: { r: number, c: number },
-    steps: { cell: { r: number, c: number }, grid: number[][] }[],
+    steps: {
+     cell: { r: number, c: number }, grid: number[][] , description: { type: string, text: string }
+}[],
     currAnimationIndx: number,
     sudokuDifficulty: number,
     animationSpeed: number,

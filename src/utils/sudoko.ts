@@ -17,13 +17,6 @@ function isValidSudoko(grid: number[][], r: number, c: number, num: number, grid
 }
 
 export function solveSudoko(grid: number[][], r: number = 0, c: number = 0, dispatch: React.Dispatch<any>, gridSize: number = 3, recordSteps: boolean = true) {
-    if (recordSteps) {
-        dispatch({ type: 'ADD_STEP', payload: { 
-            grid: grid.map(row => row.slice()),
-            cell: { r, c } }
-        })
-    }
-
     if (r === gridSize ** 2) {
         return true
     }
@@ -33,6 +26,17 @@ export function solveSudoko(grid: number[][], r: number = 0, c: number = 0, disp
     }
 
     if (grid[r][c] !== 0) {
+        if (recordSteps) {
+            dispatch({ type: 'ADD_STEP', payload: { 
+                grid: grid.map(row => row.slice()),
+                cell: { r, c: c + 1 },
+                description: {
+                    type: 'skip',
+                    text: `Cell (${r}, ${c + 1}) already filled.`
+                }
+            }
+            })
+        }
         return solveSudoko(grid, r, c + 1, dispatch, gridSize, recordSteps)
     }
 
@@ -46,10 +50,36 @@ export function solveSudoko(grid: number[][], r: number = 0, c: number = 0, disp
 
             if (solveSudoko(grid, r, c + 1, dispatch, gridSize, recordSteps)) {
                 return true
+            } else {
+                if (recordSteps) {
+                    dispatch({ type: 'ADD_STEP', payload: { 
+                        grid: grid.map(row => row.slice()),
+                        cell: { r, c: c + 1 },
+                        description: {
+                            type: 'backtrack',
+                            text: `Backtracking...`
+                        }
+                    }
+                    })
+                }
             }
 
-            grid[r][c] = 0
+        } else {
+            if (recordSteps) {
+                grid[r][c] = num
+                dispatch({ type: 'ADD_STEP', payload: { 
+                    grid: grid.map(row => row.slice()),
+                    cell: { r, c: c + 1 },
+                    description: {
+                        type: 'invalid',
+                        text: `Invalid number. Trying... ${num}`
+                    }
+                }
+                })
+            }
         }
+
+        grid[r][c] = 0
     }
 
     return false
