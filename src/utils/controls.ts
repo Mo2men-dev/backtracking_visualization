@@ -48,7 +48,7 @@ export function reset(globalState: IntialStateType, dispatch: React.Dispatch<any
     if (!globalState.pause) pause(globalState, dispatch)
     if (globalState.animate) globalState.animate = false
 
-    dispatch({ type: 'SET_CURRENT_GRID', payload: globalState.steps[0].grid })
+    dispatch({ type: 'SET_CURRENT_GRID', payload: globalState.initalGrid })
     dispatch({ type: 'SET_CURR_ANIMATION_INDX', payload: 0 })
     dispatch({ type: 'SET_CURR_CELL', payload: { r: 0, c: 0 } })
     dispatch({ type: 'SET_ANIMATION_DONE', payload: false })
