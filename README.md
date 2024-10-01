@@ -9,6 +9,7 @@ Backtracking is a general algorithm for finding all (or some) solutions to a com
 ## Visualisation Features
 - Set the speed of the visualisation
 - Step through the visualisation
+- Steps tracking with Detailed Description
 - Reset the visualisation
 - Adjust 'Difficulty' of Sudoku Grid
 - Generate Grids
