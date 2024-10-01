@@ -32,7 +32,7 @@ export function solveSudoko(grid: number[][], r: number = 0, c: number = 0, disp
                 cell: { r, c: c + 1 },
                 description: {
                     type: 'skip',
-                    text: `Cell (${r}, ${c + 1}) already filled.`
+                    text: `Cell (${r}, ${c}) already filled.`
                 }
             }
             })
