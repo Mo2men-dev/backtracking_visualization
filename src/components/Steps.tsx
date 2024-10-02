@@ -18,9 +18,7 @@ function Steps() {
 			]);
 		}
 
-		if (globalState.currAnimationIndx === 0) {  
-			setStepsDescription([]);
-		}
+		if (globalState.currAnimationIndx === 0) setStepsDescription([]);
 
 	}, [globalState.currAnimationIndx]);
 
@@ -34,8 +32,16 @@ function Steps() {
                         if (i === globalState.currAnimationIndx) return;
                         if (!globalState.pause) globalState.pause = true;
                         globalState.currAnimationIndx = i;
-                        dispatch({ type: 'SET_CURRENT_GRID', payload: globalState.steps[i].grid });
-                        dispatch({ type: 'SET_CURR_CELL', payload: globalState.steps[i].cell });
+
+                        if (i === 0) {
+                            dispatch({ type: 'SET_CURRENT_GRID', payload: globalState.initalGrid });
+                            dispatch({ type: 'SET_CURR_CELL', payload: { r: 0, c: 0 } });                            
+                        }
+                        else {
+                            dispatch({ type: 'SET_CURRENT_GRID', payload: globalState.steps[i].grid });
+                            dispatch({ type: 'SET_CURR_CELL', payload: globalState.steps[i].cell });
+                        }
+
                         setStepsDescription(stepsDescription.slice(0, i + 1));
                     }}
 					className="text-sm p-2 bg-[#403d39] my-1 rounded-md cursor-pointer">
