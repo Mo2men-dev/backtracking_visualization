@@ -81,4 +81,5 @@ export function generate(globalState: IntialStateType, dispatch: React.Dispatch<
     dispatch({ type: 'SET_CURR_ANIMATION_INDX', payload: 0 })
     dispatch({ type: 'SET_INITIAL_GRID', payload: grid });
     dispatch({ type: 'SET_INITIAL_GRID_COPY', payload: grid.map(row => row.slice()) });
+    dispatch({ type: 'SET_ANIMATION_DONE', payload: false });
 }

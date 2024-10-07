@@ -42,6 +42,9 @@ function Steps() {
                             dispatch({ type: 'SET_CURR_CELL', payload: globalState.steps[i].cell });
                         }
 
+                        dispatch({ type: 'SET_ANIMATION_DONE', payload: false });
+                        dispatch({ type: 'SET_ANIMATE', payload: true });
+
                         setStepsDescription(stepsDescription.slice(0, i + 1));
                     }}
 					className="text-sm p-2 bg-[#403d39] my-1 rounded-md cursor-pointer">
