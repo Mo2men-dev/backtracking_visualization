@@ -1,4 +1,4 @@
-export function border(i: number, j: number, gridSize: number = 3) {
+export function border(i: number, j: number, animationDone: boolean = false , gridSize: number = 3) {
     let border = 'border-r-2 border-b-2 border-white'
 
     if (i === gridSize ** 2 - 1) {
@@ -30,7 +30,7 @@ export function border(i: number, j: number, gridSize: number = 3) {
         border = `border-r-4 border-b-4 border-b-blue-500 border-r-blue-500`
     }
 
-    return border
+    return `${border} ${animationDone ? 'animate-border-fade-to-green' : 'animate-none'}`
 }
 
 

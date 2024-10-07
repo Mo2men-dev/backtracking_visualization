@@ -35,6 +35,16 @@ export default {
                     transform: "translateY(0)",
                 }
             },
+            "border-fade-to-green": {
+                "0%": {
+                    backgroundColor: "#50C878",
+                    borderColor: "#F3F4F6",
+                },
+                "100%": {
+                    borderColor: "#50C878",
+                    backgroundColor: "none",
+                },
+            },
         },
 
         animation: {
@@ -42,6 +52,7 @@ export default {
             "fade-in-right": "fade-in-right .5s ease-out forwards",
             "fade-in-right-delay": "fade-in-right .5s ease-out .5s forwards",
             "fade-in-top": "fade-in-top 1s ease-out 1s forwards",
+            "border-fade-to-green": "border-fade-to-green .5s linear forwards",
         },
 
         fontFamily: {

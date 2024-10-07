@@ -10,7 +10,9 @@ function Display() {
 
     return (
         <HorizontalSection styles='flex flex-1 w-fit justify-evenly items-center animate-fade-in opacity-0'>
-            <Grid />
+            <div className={`transition-all ${globalState.problem === 'n-queens' && globalState.animationDone ? 'border-green-400 border-4 rounded-lg text-[#50C878]' : ''}`}>
+                <Grid />
+            </div>
             <Button text='Solve' props={{ onClick: () => play(dispatch, globalState), disabled: globalState.animationDone }} />
         </HorizontalSection>
     )
